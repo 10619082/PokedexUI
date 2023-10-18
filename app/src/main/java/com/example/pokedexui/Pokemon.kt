@@ -1,3 +1,8 @@
 package com.example.pokedexui
 
-class Pokemon(val name: String, val number: Int, val type: String)
+class Pokemon(
+    val name: String,
+    val number: Int,
+    val type: String,
+    val imageUrl: String
+)
