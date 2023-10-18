@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = gridLayoutManager
 
         // Crea un adapter personalizzato per il RecyclerView
-        adapter = PokemonAdapter(pokemonList,R.layout.pokemon_list_item)
+        adapter = PokemonAdapter(this,pokemonList,R.layout.pokemon_list_item)
         recyclerView.adapter = adapter
 
         // Recupera e visualizza i dati dei Pokémon nel tuo adapter
