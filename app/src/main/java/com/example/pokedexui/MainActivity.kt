@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun fetchDataAndPopulateList() {
         val url = "https://pokeapi.co/api/v2/pokemon/?limit=151"
+        val totalPokemonCount = 151 // Numero totale di Pokémon che stai cercando
+        var completedApiCalls = 0
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
@@ -52,22 +54,50 @@ class MainActivity : AppCompatActivity() {
                     val url = pokemonObject.getString("url")
                     val number = extractPokemonNumberFromUrl(url)
 
-                    val imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$number.png"
+                    val detailsUrl = "https://pokeapi.co/api/v2/pokemon/$number/"
 
-                    //val pokemonName = pokemon.name //
-                    //val displayName = "No. ${number}: $pokemonName" //
-                    //Aggiungo pokemon all'adapter
-                    val pokemon = Pokemon(name.capitalize(), number, "Tipo non ancora recuperato", imageUrl)
-                    pokemonList.add(pokemon)
+                    // Esegui una seconda chiamata API per ottenere le informazioni dettagliate del Pokémon
+                    val detailJsonObjectRequest = JsonObjectRequest(
+                        Request.Method.GET, detailsUrl, null,
+                        { detailResponse ->
+                            val types = detailResponse.getJSONArray("types")
+                            val typeNames = ArrayList<String>()
+                            for (j in 0 until types.length()) {
+                                val typeObject = types.getJSONObject(j)
+                                val typeName = typeObject.getJSONObject("type").getString("name")
+                                typeNames.add(typeName)
+                            }
+
+                            val imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$number.png"
+
+                            // Crea un oggetto Pokemon con il nome, il numero e i tipi recuperati
+                            val pokemon = Pokemon(name.capitalize(), number, typeNames.joinToString(", "), imageUrl)
+                            //pokemonList.add(pokemon)
+
+                            completedApiCalls ++
+                            pokemonList.add(pokemon)
+
+                            if (completedApiCalls == totalPokemonCount){
+                                pokemonList.sortBy { it.number }
+                                adapter.notifyDataSetChanged()
+                            }
+
+                        },
+                        { detailError ->
+                            // Gestisci eventuali errori nella chiamata dettagliata
+                        }
+                    )
+
+                    requestQueue?.add(detailJsonObjectRequest)
                 }
-                adapter.notifyDataSetChanged()
             },
             { error ->
-                // Gestisci eventuali errori
+                // Gestisci eventuali errori nella chiamata principale
             }
         )
 
         requestQueue?.add(jsonObjectRequest)
+
     }
 
     private fun extractPokemonNumberFromUrl(url: String): Int {
