@@ -1,4 +1,6 @@
 package com.example.pokedexui
+import android.media.MediaPlayer
+
 
 import android.content.Context
 import android.content.Intent
@@ -46,6 +48,11 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
 
         // Imposta il clic su un elemento del RecyclerView
         holder.itemView.setOnClickListener {
+
+            val mediaPlayer = MediaPlayer.create(context, R.raw.pokemon_button)
+
+            // Riproduci il suono
+            mediaPlayer.start()
             // Quando un Pokémon viene cliccato, crea un intent per avviare l'Activity dei dettagli
             val intent = Intent(context, PokemonDetailActivity::class.java)
 

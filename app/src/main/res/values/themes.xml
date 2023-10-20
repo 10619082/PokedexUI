@@ -2,8 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.PokedexUI" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#E61E1E</item>
     </style>
 
     <style name="Theme.PokedexUI" parent="Base.Theme.PokedexUI" />
+    <style name = "Theme.PokedexUI.BackgroundImageStyle">
+        <item name="android:windowBackground">@drawable/pokedex</item>
+    </style>
 </resources>

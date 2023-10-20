@@ -10,12 +10,16 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import android.media.MediaPlayer
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PokemonAdapter
     private var pokemonList = ArrayList<Pokemon>()
     private var requestQueue: RequestQueue? = null
+    private var mediaPlayer: MediaPlayer? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +29,12 @@ class MainActivity : AppCompatActivity() {
         //recyclerView = findViewById(R.id.pokemonRecyclerView)
         //recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // Inizializza il MediaPlayer e carica il file audio
+        mediaPlayer = MediaPlayer.create(this, R.raw.pokemon_ruby_sapphire_emerald_littleroot_town) // Sostituisci "nome_file_audio" con il nome del tuo file audio
+        mediaPlayer?.isLooping = true // Per far ripetere la musica
+        mediaPlayer?.start()
+
+
         recyclerView = findViewById(R.id.pokemonRecyclerView)
         val gridLayoutManager = GridLayoutManager(this, 3) // Imposta il numero di colonne desiderato (3 in questo caso)
         recyclerView.layoutManager = gridLayoutManager
@@ -32,6 +42,9 @@ class MainActivity : AppCompatActivity() {
         // Crea un adapter personalizzato per il RecyclerView
         adapter = PokemonAdapter(this,pokemonList,R.layout.pokemon_list_item)
         recyclerView.adapter = adapter
+
+
+
 
         // Recupera e visualizza i dati dei Pokémon nel tuo adapter
         requestQueue = Volley.newRequestQueue(this)
