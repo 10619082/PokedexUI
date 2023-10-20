@@ -12,10 +12,10 @@
     <color name="rock">#C9795548</color>
     <color name="fighting">#D2D32F2F</color>
     <color name="psychic">#C4FF4081</color>
-    <color name="ground">#C4795548</color>
-    <color name="flying">#03A9F4</color>
-    <color name="ghost">#607D8B</color>
-    <color name="steel">#607D8B</color>
+    <color name="ground">#C45A2917</color>
+    <color name="flying">#79ACC3</color>
+    <color name="ghost">#3A3443</color>
+    <color name="steel">#3A3B3C</color>
     <color name="ice">#FD00BCD4</color>
     <color name="dragon">#D08D4CE9</color>
     <color name="fairy">#F68DB1</color>

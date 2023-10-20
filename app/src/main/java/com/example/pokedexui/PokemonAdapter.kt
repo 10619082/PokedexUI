@@ -1,10 +1,10 @@
 package com.example.pokedexui
-import android.media.MediaPlayer
 
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +46,7 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
         val capitalizedName = pokemon.name.capitalize() // Converti la prima lettera in maiuscolo
         val displayName = "No. ${pokemon.number}: $capitalizedName" // Concatena numero e nome
 
+
         // Imposta il clic su un elemento del RecyclerView
         holder.itemView.setOnClickListener {
 
@@ -60,9 +61,34 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
             intent.putExtra("pokemon_name", displayName)
             intent.putExtra("pokemon_type", pokemon.type)
             intent.putExtra("pokemon_image_url", pokemon.imageUrl)
-
             context.startActivity(intent)
         }
+
+
+
+
+        // Imposta il colore dello sfondo in base al tipo del Pokémon
+
+
+        val types = pokemon.type.split(",")
+        if (types.size == 2) {
+            val type1ColorRes = typeColors[types[0].trim().toLowerCase()] ?: R.color.default_color
+            val type2ColorRes = typeColors[types[1].trim().toLowerCase()] ?: R.color.default_color
+
+            val color1 = ContextCompat.getColor(context, type1ColorRes)
+            val color2 = ContextCompat.getColor(context, type2ColorRes)
+
+            // Imposta il colore dello sfondo diviso in due parti
+            holder.itemView.background = GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(color1, color2)
+            )
+        } else {
+            val typeColorRes = typeColors[pokemon.type.split(',')[0].toLowerCase()] ?: R.color.white
+            val color = ContextCompat.getColor(context, typeColorRes)
+            holder.itemView.setBackgroundColor(color)
+        }
+
+        //Carica immagine pokemon
 
         holder.updatePokemon(pokemon)
 
@@ -70,10 +96,6 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
             .load(pokemon.imageUrl)
             .into(holder.getPokemonImageView()!!)
 
-        // Imposta il colore dello sfondo in base al tipo del Pokémon
-        val typeColorRes = typeColors[pokemon.type.split(',')[0].toLowerCase()] ?: R.color.white
-        val color = ContextCompat.getColor(context, typeColorRes)
-        holder.itemView.setBackgroundColor(color)
 
     }
 
@@ -89,11 +111,13 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
 
         init {
             pokemonNameTextView = itemView.findViewById(R.id.pokemonName)
-            pokemonImageView = itemView.findViewById(R.id.pokemonImage) // Associa l'ImageView
+            pokemonImageView = itemView.findViewById(R.id.pokemonImage)
+            pokemonNumberTextView = itemView.findViewById(R.id.pokemonNumber)// Associa l'ImageView
         }
 
         fun updatePokemon(pokemon: Pokemon) {
             pokemonNameTextView?.text = pokemon.name
+            pokemonNumberTextView?.text = "#${pokemon.number.toString().padStart(3, '0')}"
         }
 
         fun getPokemonImageView(): ImageView? {
