@@ -6,19 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pokedex"
-    tools:context=".PokemonDetailActivity"
-
-    >
+    tools:context=".PokemonDetailActivity">
 
     <ImageView
         android:id="@+id/pokemonImageView"
-        android:layout_width="210dp"
-        android:layout_height="210dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/guideline12"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="@+id/guideline11"
         app:srcCompat="@drawable/placeholder_image" />
 
     <TextView
@@ -74,6 +72,7 @@
         android:layout_width="216dp"
         android:layout_height="108dp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -81,6 +80,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/textView"
         tools:listitem="@layout/item_chain_evolution" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -139,28 +139,24 @@
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
         android:contentDescription="Next Pokemon"
         android:src="@drawable/baseline_play_arrow_24"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toEndOf="@+id/pokemonImageView"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <ImageView
         android:id="@+id/btnPreviousPokemon"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
         android:contentDescription="Previous Pokemon"
         android:scaleX="-1"
         android:src="@drawable/baseline_play_arrow_24"
-        app:layout_constraintEnd_toStartOf="@+id/pokemonImageView"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
@@ -181,6 +177,34 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.32" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="101dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="311dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.26402187" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="402dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

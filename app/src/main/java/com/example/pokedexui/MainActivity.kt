@@ -27,8 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //recyclerView = findViewById(R.id.pokemonRecyclerView)
-        //recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Inizializzo il MediaPlayer e carico il file audio
         mediaPlayer = MediaPlayer.create(this, R.raw.pokemon_ruby_sapphire_emerald_littleroot_town) // Sostituisci "nome_file_audio" con il nome del tuo file audio
@@ -37,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         val loadingImageView = findViewById<ImageView>(R.id.loadingImageView)
 
-        // Mostra l'ImageView con la GIF di caricamento
+        // Mostro l'ImageView con la GIF di caricamento
         val imageResourceId = resources.getIdentifier("loading", "raw", packageName) // Trova l'ID della risorsa
         val gifDrawable = GifDrawable(resources, imageResourceId)
         loadingImageView.setImageDrawable(gifDrawable)
@@ -50,15 +48,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
-        // Crea un adapter personalizzato per il RecyclerView
         adapter = PokemonAdapter(this,pokemonList,R.layout.pokemon_list_item)
         recyclerView.adapter = adapter
 
 
-
-
-        // Recupera e visualizza i dati dei Pokémon nel tuo adapter
         requestQueue = Volley.newRequestQueue(this)
 
         fetchDataAndPopulateList(loadingImageView)
@@ -73,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             { response ->
-                // Gestisci la risposta JSON per ottenere l'elenco di Pokémon
+
                 val results = response.getJSONArray("results")
                 for (i in 0 until results.length()) {
                     val pokemonObject = results.getJSONObject(i)
@@ -83,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
                     val detailsUrl = "https://pokeapi.co/api/v2/pokemon/$number/"
 
-                    // Esegui una seconda chiamata API per ottenere le informazioni dettagliate del Pokémon
+                    // Eseguo una seconda chiamata API per ottenere la descrizione dei pokemon
                     val detailJsonObjectRequest = JsonObjectRequest(
                         Request.Method.GET, detailsUrl, null,
                         { detailResponse ->
@@ -97,9 +90,7 @@ class MainActivity : AppCompatActivity() {
 
                             val imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$number.png"
 
-                            // Crea un oggetto Pokemon con il nome, il numero e i tipi recuperati
                             val pokemon = Pokemon(name = name.capitalize(), number = number, type = typeNames.joinToString(", "), imageUrl = imageUrl)
-                            //pokemonList.add(pokemon)
 
                             completedApiCalls ++
                             pokemonList.add(pokemon)
@@ -114,7 +105,6 @@ class MainActivity : AppCompatActivity() {
 
                         },
                         { detailError ->
-                            // Gestisci eventuali errori nella chiamata dettagliata
                         }
                     )
 
@@ -122,7 +112,6 @@ class MainActivity : AppCompatActivity() {
                 }
             },
             { error ->
-                // Gestisci eventuali errori nella chiamata principale
             }
         )
 
@@ -130,7 +119,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun extractPokemonNumberFromUrl(url: String): Int {
+    fun extractPokemonNumberFromUrl(url: String): Int {
         // L'URL ha il formato "https://pokeapi.co/api/v2/pokemon/{numero}/"
         val parts = url.split("/")
         return parts[parts.size - 2].toInt()

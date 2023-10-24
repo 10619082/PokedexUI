@@ -9,10 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 
-interface OnPokemonClickListener {
-    fun onPokemonClick(pokemon: Pokemon)
-}
-
 class ChainEvolutionAdapter(
     private val chainEvolution: List<Pokemon>,
     private val context: Context,
@@ -20,7 +16,6 @@ class ChainEvolutionAdapter(
 ) : RecyclerView.Adapter<ChainEvolutionAdapter.ChainEvolutionViewHolder>() {
 
     inner class ChainEvolutionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //val nameTextView: TextView = itemView.findViewById(R.id.pokemonNameTextView)
         val imageView: ImageView = itemView.findViewById(R.id.pokemonImageView)
     }
 
@@ -32,15 +27,12 @@ class ChainEvolutionAdapter(
     override fun onBindViewHolder(holder: ChainEvolutionViewHolder, position: Int) {
         val pokemon = chainEvolution[position]
 
-        // Imposto il nome del Pokémon
-        //holder.nameTextView.text = pokemon.name
-
-
-        // Carico l'immagine del Pokémon utilizzando Glide
+        //Carica immagine delle evoluzioni
         Glide.with(context)
             .load(pokemon.imageUrl)
             .into(holder.imageView)
 
+        //Suono del click
         holder.imageView.setOnClickListener {
             val mediaPlayer = MediaPlayer.create(context, R.raw.pokemon_button)
             mediaPlayer.start()

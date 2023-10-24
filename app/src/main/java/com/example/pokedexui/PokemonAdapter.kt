@@ -41,21 +41,19 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
         return PokemonViewHolder(view)
     }
 
-    // All'interno del metodo onBindViewHolder del tuo adapter
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
         val pokemon = pokemonList[position]
-        val capitalizedName = pokemon.name!!.capitalize() // Converti la prima lettera in maiuscolo
-        val displayName = "No. ${pokemon.number}: $capitalizedName" // Concatena numero e nome
+        val capitalizedName = pokemon.name!!.capitalize() // Converto la prima lettera in maiuscolo
 
 
-        // Imposta il clic su un elemento del RecyclerView
+        // Imposo il clic su un elemento del RecyclerView
         holder.itemView.setOnClickListener {
 
             val mediaPlayer = MediaPlayer.create(context, R.raw.pokemon_button)
 
-            // Riproduci il suono
+            // Riproduco la canzone all'avvio
             mediaPlayer.start()
-            // Quando un Pokémon viene cliccato, crea un intent per avviare l'Activity dei dettagli
+            // Quando un Pokémon viene cliccato, creo un intent per avviare l'Activity specifica del pokemon
             val intent = Intent(context, PokemonDetailActivity::class.java)
 
             //Passo l'oggetto pokemon
@@ -69,7 +67,7 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
 
 
 
-        // Imposta il colore dello sfondo in base al tipo del Pokémon
+        // Imposto il colore dello sfondo in base al tipo del Pokémon
 
 
         val types = pokemon.type!!.split(",")
@@ -80,7 +78,7 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
             val color1 = ContextCompat.getColor(context, type1ColorRes)
             val color2 = ContextCompat.getColor(context, type2ColorRes)
 
-            // Imposta il colore dello sfondo diviso in due parti
+            // Imposto il colore dello sfondo diviso in due parti
             holder.itemView.background = GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(color1, color2)
             )
@@ -90,7 +88,7 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
             holder.itemView.setBackgroundColor(color)
         }
 
-        //Carica immagine pokemon
+        //Carico immagine pokemon
 
         holder.updatePokemon(pokemon)
 
@@ -108,7 +106,6 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
     inner class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var pokemonNameTextView: TextView? = null
         private var pokemonNumberTextView: TextView? = null
-        private var pokemonTypeTextView: TextView? = null
         private var pokemonImageView: ImageView? = null
 
         init {

@@ -24,9 +24,6 @@ class PokemonDetailActivity : AppCompatActivity() {
     private lateinit var descriptionTextView: TextView
     private var currNumber: Int = 0
     private var pendingRequests: Int = 0
-    private var numberIdEvolution = ArrayList<Int>()
-    private var nameEvolution = ArrayList<String>()
-    private var nameEvolution0: String? = null
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var chainEvolutionAdapter: ChainEvolutionAdapter
@@ -53,19 +50,15 @@ class PokemonDetailActivity : AppCompatActivity() {
         }
 
         ivNextPokemon.setOnClickListener {
-            // Gestisci il clic sulla ImageView "Successivo" e apri la PokemonDetailActivity corrispondente
             openPokemonDetailForNextPokemon()
         }
 
-        // Recupera i dati del Pokémon dall'intent
+        // Recupero i dati del Pokémon dall'intent
         val currentPokemonSerialized  = intent.getStringExtra("selectedPokemon")
         currentPokemon = Gson().fromJson(currentPokemonSerialized , Pokemon::class.java)
-
         currNumber = currentPokemon.number!!
 
 
-
-        // Mostra i dati nella tua interfaccia utente, inclusa l'immagine
         val nameTextView = findViewById<TextView>(R.id.pokemonNameTextView)
         val typeTextView = findViewById<TextView>(R.id.pokemonTypeTextView)
         val numberTextView = findViewById<TextView>(R.id.pokemonNumberTextView)
@@ -76,9 +69,7 @@ class PokemonDetailActivity : AppCompatActivity() {
         //GIF
         nameTextView.text = currentPokemon.name!!
         typeTextView.text = "Type: ${currentPokemon.type}"
-
         numberTextView.text = "Number ID: " + "#${currentPokemon.number.toString().padStart(3, '0')}"
-
         val imageResourceId = resources.getIdentifier('t'+ currentPokemon.number.toString(), "raw", packageName) // Trova l'ID della risorsa
 
         if (imageResourceId != 0) {
@@ -218,7 +209,6 @@ class PokemonDetailActivity : AppCompatActivity() {
                 val evolutionChainUrl = response.getJSONObject("evolution_chain")
                     .getString("url")
 
-                // Ora puoi effettuare una chiamata API per ottenere la catena evolutiva
                 fetchEvolutionChainDetails(evolutionChainUrl)
 
             },
@@ -300,10 +290,10 @@ class PokemonDetailActivity : AppCompatActivity() {
         recyclerView.layoutManager = gridLayoutManager
 
         chainEvolutionAdapter = ChainEvolutionAdapter(chainEvolution, this) { clickedPokemon ->
-            // Crea un intent per aprire la pagina del Pokémon cliccato
+            // Creo un intent per aprire la pagina del Pokémon cliccato
             val intent = Intent(this, PokemonDetailActivity::class.java)
 
-            // Passa l'oggetto Pokémon
+            // Passo l'oggetto Pokémon
             val gson = Gson()
             val pokemonJson = gson.toJson(clickedPokemon)
             intent.putExtra("selectedPokemon", pokemonJson)
