@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 
 class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon>, val itemLayout: Int) : RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>() {
     private val typeColors = mapOf(
@@ -43,7 +44,7 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
     // All'interno del metodo onBindViewHolder del tuo adapter
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
         val pokemon = pokemonList[position]
-        val capitalizedName = pokemon.name.capitalize() // Converti la prima lettera in maiuscolo
+        val capitalizedName = pokemon.name!!.capitalize() // Converti la prima lettera in maiuscolo
         val displayName = "No. ${pokemon.number}: $capitalizedName" // Concatena numero e nome
 
 
@@ -57,10 +58,11 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
             // Quando un Pokémon viene cliccato, crea un intent per avviare l'Activity dei dettagli
             val intent = Intent(context, PokemonDetailActivity::class.java)
 
-            // Passa i dati del Pokémon come extras nell'intent
-            intent.putExtra("pokemon_name", displayName)
-            intent.putExtra("pokemon_type", pokemon.type)
-            intent.putExtra("pokemon_image_url", pokemon.imageUrl)
+            //Passo l'oggetto pokemon
+            val gson = Gson()
+            val pokemonJson = gson.toJson(pokemon)
+            intent.putExtra("selectedPokemon", pokemonJson)
+
             context.startActivity(intent)
         }
 
@@ -70,7 +72,7 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
         // Imposta il colore dello sfondo in base al tipo del Pokémon
 
 
-        val types = pokemon.type.split(",")
+        val types = pokemon.type!!.split(",")
         if (types.size == 2) {
             val type1ColorRes = typeColors[types[0].trim().toLowerCase()] ?: R.color.default_color
             val type2ColorRes = typeColors[types[1].trim().toLowerCase()] ?: R.color.default_color
@@ -83,7 +85,7 @@ class PokemonAdapter(private val context: Context, val pokemonList: List<Pokemon
                 GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(color1, color2)
             )
         } else {
-            val typeColorRes = typeColors[pokemon.type.split(',')[0].toLowerCase()] ?: R.color.white
+            val typeColorRes = typeColors[pokemon.type!!.split(',')[0].toLowerCase()] ?: R.color.white
             val color = ContextCompat.getColor(context, typeColorRes)
             holder.itemView.setBackgroundColor(color)
         }

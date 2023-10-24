@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">PokedexUI</string>
+    <string name="image">Image</string>
+    <string name="pokemon_name">Pokemon Name</string>
+    <string name="evolution">Evolution</string>
 </resources>

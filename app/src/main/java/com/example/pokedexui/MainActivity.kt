@@ -2,6 +2,8 @@ package com.example.pokedexui
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +11,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-
+import pl.droidsonroids.gif.GifDrawable
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,15 +30,26 @@ class MainActivity : AppCompatActivity() {
         //recyclerView = findViewById(R.id.pokemonRecyclerView)
         //recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Inizializza il MediaPlayer e carica il file audio
+        // Inizializzo il MediaPlayer e carico il file audio
         mediaPlayer = MediaPlayer.create(this, R.raw.pokemon_ruby_sapphire_emerald_littleroot_town) // Sostituisci "nome_file_audio" con il nome del tuo file audio
-        mediaPlayer?.isLooping = true // Per far ripetere la musica
+        mediaPlayer?.isLooping = true
         mediaPlayer?.start()
+
+        val loadingImageView = findViewById<ImageView>(R.id.loadingImageView)
+
+        // Mostra l'ImageView con la GIF di caricamento
+        val imageResourceId = resources.getIdentifier("loading", "raw", packageName) // Trova l'ID della risorsa
+        val gifDrawable = GifDrawable(resources, imageResourceId)
+        loadingImageView.setImageDrawable(gifDrawable)
+        loadingImageView.visibility = View.VISIBLE
 
 
         recyclerView = findViewById(R.id.pokemonRecyclerView)
         val gridLayoutManager = GridLayoutManager(this, 3) // Imposta il numero di colonne desiderato (3 in questo caso)
         recyclerView.layoutManager = gridLayoutManager
+
+
+
 
         // Crea un adapter personalizzato per il RecyclerView
         adapter = PokemonAdapter(this,pokemonList,R.layout.pokemon_list_item)
@@ -47,10 +60,12 @@ class MainActivity : AppCompatActivity() {
 
         // Recupera e visualizza i dati dei Pokémon nel tuo adapter
         requestQueue = Volley.newRequestQueue(this)
-        fetchDataAndPopulateList()
+
+        fetchDataAndPopulateList(loadingImageView)
+
     }
 
-    private fun fetchDataAndPopulateList() {
+    private fun fetchDataAndPopulateList(loadingImageView: ImageView) {
         val url = "https://pokeapi.co/api/v2/pokemon/?limit=151"
         val totalPokemonCount = 151 // Numero totale di Pokémon che stai cercando
         var completedApiCalls = 0
@@ -83,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                             val imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$number.png"
 
                             // Crea un oggetto Pokemon con il nome, il numero e i tipi recuperati
-                            val pokemon = Pokemon(name.capitalize(), number, typeNames.joinToString(", "), imageUrl)
+                            val pokemon = Pokemon(name = name.capitalize(), number = number, type = typeNames.joinToString(", "), imageUrl = imageUrl)
                             //pokemonList.add(pokemon)
 
                             completedApiCalls ++
@@ -92,6 +107,9 @@ class MainActivity : AppCompatActivity() {
                             if (completedApiCalls == totalPokemonCount){
                                 pokemonList.sortBy { it.number }
                                 adapter.notifyDataSetChanged()
+                                loadingImageView.visibility = View.GONE
+                                recyclerView.visibility = View.VISIBLE
+
                             }
 
                         },
@@ -117,4 +135,15 @@ class MainActivity : AppCompatActivity() {
         val parts = url.split("/")
         return parts[parts.size - 2].toInt()
     }
+
+    fun pauseAudio() {
+        mediaPlayer?.pause()
+    }
+
+    fun stopAudio() {
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
+    }
+
 }
